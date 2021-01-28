@@ -47,14 +47,15 @@ mvn clean install spring-boot:run
   ```
   
   * perform dijkstra between two points already added
-   ```
+   ```curl
    curl --location --request POST 'localhost:8080/dijkstra' \
 --header 'Content-type: application/json' \
 --data-raw '{
     "origin": "GRU", 
     "destination": "CDG"
 }'
-    ```
+```
+   
  
  
  
