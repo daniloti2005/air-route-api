@@ -3,6 +3,9 @@
 This project is developed to be used as an API to test the library air-route-common, that is responsible for manipulate graph data structure and perform dijkstra diagram.
 
 ## How to compile
+```maven
+mvn clean install spring-boot:run
+```
 
 ## How to test
 
