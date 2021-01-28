@@ -52,8 +52,8 @@ public class RouteController {
             DijkstraResult res = new DijkstraResult();
             res.setNode(item.getName());
             res.setDistanceFromOrigin(item.getDistanceFromOrigin());
-            res.setPrevioues(item.getPreviousNode().getName());
             res.setDistanceFromPrevious(item.getDistanceFromPrevious());
+            listReturn.add(res);
         }
         return listReturn;
     }

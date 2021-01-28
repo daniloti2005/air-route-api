@@ -3,7 +3,6 @@ package br.com.daniloti2005.airrouteapis.route.model;
 public class DijkstraResult {
 
     private String node;
-    private String previoues;
     private Integer distanceFromOrigin;
     private Integer distanceFromPrevious;
 
@@ -11,9 +10,8 @@ public class DijkstraResult {
 
     }
 
-    public DijkstraResult(String node, String previoues, Integer distanceFromOrigin, Integer distanceFromPrevious) {
+    public DijkstraResult(String node, Integer distanceFromOrigin, Integer distanceFromPrevious) {
         this.node = node;
-        this.previoues = previoues;
         this.distanceFromOrigin = distanceFromOrigin;
         this.distanceFromPrevious = distanceFromPrevious;
     }
@@ -24,14 +22,6 @@ public class DijkstraResult {
 
     public void setNode(String node) {
         this.node = node;
-    }
-
-    public String getPrevioues() {
-        return previoues;
-    }
-
-    public void setPrevioues(String previoues) {
-        this.previoues = previoues;
     }
 
     public Integer getDistanceFromOrigin() {
