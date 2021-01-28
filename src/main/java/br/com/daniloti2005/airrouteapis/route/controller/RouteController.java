@@ -1,11 +1,13 @@
 package br.com.daniloti2005.airrouteapis.route.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.daniloti2005.air_route_commons.interpreter.dijkstra.Node;
 import br.com.daniloti2005.airrouteapis.route.controller.exception.RouteNotFoundException;
 import br.com.daniloti2005.airrouteapis.route.model.DijkstraParameters;
+import br.com.daniloti2005.airrouteapis.route.model.DijkstraResult;
 import br.com.daniloti2005.airrouteapis.route.model.Route;
 import br.com.daniloti2005.airrouteapis.route.model.RouteModelAssembler;
 import br.com.daniloti2005.airrouteapis.route.model.specs.RouteRepository;
@@ -36,13 +38,24 @@ public class RouteController {
     }
 
     @PostMapping("/dijkstra")
-    List<Node> runRoute(@RequestBody DijkstraParameters parameter) {
+    List<DijkstraResult> runRoute(@RequestBody DijkstraParameters parameter) {
         RouteService service = new RouteService();
         br.com.daniloti2005.air_route_commons.interpreter.dijkstra.Route rota = new br.com.daniloti2005.air_route_commons.interpreter.dijkstra.Route();
         for (Route item : repository.findAll()){
             rota.makeRoute(item.getOrigin(), item.getDestination(), item.getCost());
         }
-        return service.run(parameter.getOrigin(), parameter.getDestination(), rota);
+        List<Node> result = service.run(parameter.getOrigin(), parameter.getDestination(), rota);
+
+        List<DijkstraResult> listReturn = new ArrayList<>();
+
+        for (Node item : result) {
+            DijkstraResult res = new DijkstraResult();
+            res.setNode(item.getName());
+            res.setDistanceFromOrigin(item.getDistanceFromOrigin());
+            res.setPrevioues(item.getPreviousNode().getName());
+            res.setDistanceFromPrevious(item.getDistanceFromPrevious());
+        }
+        return listReturn;
     }
 
     @GetMapping("/routes")

@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.daniloti2005.air-route-apis</groupId>
-	<artifactId>payroll</artifactId>
+	<artifactId>air-route-apis</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>payroll</name>
-	<description>payroll - tests</description>
+	<name>air-route-apis</name>
+	<description>air-route-apis - tests</description>
 	<properties>
 		<java.version>15</java.version>
 	</properties>
