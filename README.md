@@ -9,11 +9,14 @@ This project is developed to be used as an API to test the library air-route-com
 * Import public postman public collection: https://www.getpostman.com/collections/687feaeceb7b92de5d0a
 * Or use this curl commands: 
   * To post new route:
-  | curl --location --request POST 'localhost:8080/route' \
+  '''curl
+  curl --location --request POST 'localhost:8080/route' \
 --header 'Content-type: application/json' \
 --data-raw '{
     "origin": "Sumare", 
     "destination": "Campinas",
     "cost": 1
 }'
+ '''
+ 
 
