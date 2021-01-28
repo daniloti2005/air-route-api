@@ -3,10 +3,13 @@ package br.com.daniloti2005.airrouteapis.route.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.com.daniloti2005.air_route_commons.interpreter.dijkstra.Node;
 import br.com.daniloti2005.airrouteapis.route.controller.exception.RouteNotFoundException;
+import br.com.daniloti2005.airrouteapis.route.model.DijkstraParameters;
 import br.com.daniloti2005.airrouteapis.route.model.Route;
 import br.com.daniloti2005.airrouteapis.route.model.RouteModelAssembler;
 import br.com.daniloti2005.airrouteapis.route.model.specs.RouteRepository;
+import br.com.daniloti2005.airrouteapis.route.service.RouteService;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,15 +35,24 @@ public class RouteController {
         this.assembler = assembler;
     }
 
+    @PostMapping("/dijkstra")
+    List<Node> runRoute(@RequestBody DijkstraParameters parameter) {
+        RouteService service = new RouteService();
+        br.com.daniloti2005.air_route_commons.interpreter.dijkstra.Route rota = new br.com.daniloti2005.air_route_commons.interpreter.dijkstra.Route();
+        for (Route item : repository.findAll()){
+            rota.makeRoute(item.getOrigin(), item.getDestination(), item.getCost());
+        }
+        return service.run(parameter.getOrigin(), parameter.getDestination(), rota);
+    }
 
     @GetMapping("/routes")
     public CollectionModel<EntityModel<Route>> all() {
 
-        List<EntityModel<Route>> employees = repository.findAll().stream()
+        List<EntityModel<Route>> routes = repository.findAll().stream()
                 .map(assembler::toModel)
                 .collect(Collectors.toList());
 
-        return CollectionModel.of(employees, linkTo(methodOn(RouteController.class).all()).withSelfRel());
+        return CollectionModel.of(routes, linkTo(methodOn(RouteController.class).all()).withSelfRel());
     }
 
     @PostMapping("/route")
@@ -63,10 +75,11 @@ public class RouteController {
     Route replaceEmployee(@RequestBody Route newRoute, @PathVariable Long id) {
 
         return repository.findById(id)
-                .map(employee -> {
-                    employee.setOrigin(newRoute.getOrigin());
-                    employee.setDestination(newRoute.getDestination());
-                    return repository.save(employee);
+                .map(route -> {
+                    route.setOrigin(newRoute.getOrigin());
+                    route.setDestination(newRoute.getDestination());
+                    route.setCost(newRoute.getCost());
+                    return repository.save(route);
                 })
                 .orElseGet(() -> {
                     newRoute.setId(id);
@@ -78,6 +91,5 @@ public class RouteController {
     void deleteEmployee(@PathVariable Long id) {
         repository.deleteById(id);
     }
-
 
 }
